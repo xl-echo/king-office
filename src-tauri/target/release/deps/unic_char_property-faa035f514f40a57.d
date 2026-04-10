@@ -1,0 +1,16 @@
+D:\AI\product\KingOffice\v1.0.0\src-tauri\target\release\deps\unic_char_property-faa035f514f40a57.d: C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\lib.rs C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\pkg_info.rs C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\property.rs C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\range_types.rs C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\macros.rs C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\tables.rs
+
+D:\AI\product\KingOffice\v1.0.0\src-tauri\target\release\deps\libunic_char_property-faa035f514f40a57.rlib: C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\lib.rs C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\pkg_info.rs C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\property.rs C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\range_types.rs C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\macros.rs C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\tables.rs
+
+D:\AI\product\KingOffice\v1.0.0\src-tauri\target\release\deps\libunic_char_property-faa035f514f40a57.rmeta: C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\lib.rs C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\pkg_info.rs C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\property.rs C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\range_types.rs C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\macros.rs C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\tables.rs
+
+C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\lib.rs:
+C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\pkg_info.rs:
+C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\property.rs:
+C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\range_types.rs:
+C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\macros.rs:
+C:\Users\ZTSK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\unic-char-property-0.9.0\src\tables.rs:
+
+# env-dep:CARGO_PKG_DESCRIPTION=UNIC — Unicode Character Tools — Character Property taxonomy, contracts and build macros
+# env-dep:CARGO_PKG_NAME=unic-char-property
+# env-dep:CARGO_PKG_VERSION=0.9.0

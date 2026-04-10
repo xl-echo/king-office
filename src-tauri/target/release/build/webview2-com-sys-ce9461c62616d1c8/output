@@ -1,0 +1,2 @@
+cargo:rustc-link-search=native=D:\AI\product\KingOffice\v1.0.0\src-tauri\target\release\build\webview2-com-sys-ce9461c62616d1c8\out\x64
+cargo:rustc-link-lib=advapi32

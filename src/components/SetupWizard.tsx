@@ -10,7 +10,6 @@ export default function SetupWizard({ onComplete }: SetupWizardProps) {
   const [step, setStep] = useState(1);
   const [installPath, setInstallPath] = useState("");
   const [dataPath, setDataPath] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleSelectInstallPath = async () => {
@@ -41,30 +40,16 @@ export default function SetupWizard({ onComplete }: SetupWizardProps) {
     }
   };
 
-  const handleFinish = async () => {
-    setIsLoading(true);
-    setError("");
-    
+  // 立即运行 - 保存配置并完成设置
+  const handleLaunch = async () => {
     try {
-      // 直接保存到本地存储
+      // 保存配置
       localStorage.setItem("kingoffice_setup_complete", "true");
       localStorage.setItem("kingoffice_install_path", installPath || "");
       localStorage.setItem("kingoffice_data_path", dataPath || "");
-      
       onComplete();
     } catch (err) {
       setError("保存配置失败: " + String(err));
-      setIsLoading(false);
-    }
-  };
-
-  // 立即运行
-  const handleLaunch = async () => {
-    try {
-      await invoke("launch_application");
-      onComplete();
-    } catch (err) {
-      setError("启动失败: " + String(err));
     }
   };
 
@@ -78,6 +63,7 @@ export default function SetupWizard({ onComplete }: SetupWizardProps) {
     }
   };
 
+  // 跳过设置
   const handleSkip = () => {
     localStorage.setItem("kingoffice_setup_complete", "true");
     onComplete();
@@ -204,16 +190,14 @@ export default function SetupWizard({ onComplete }: SetupWizardProps) {
               <button 
                 className="btn btn-outline" 
                 onClick={handleCreateShortcut}
-                disabled={isLoading}
               >
                 🏠 创建桌面快捷方式
               </button>
               <button 
                 className="btn btn-accent" 
                 onClick={handleLaunch}
-                disabled={isLoading}
               >
-                🚀 {isLoading ? "处理中..." : "立即运行"}
+                🚀 立即运行
               </button>
             </div>
           )}
