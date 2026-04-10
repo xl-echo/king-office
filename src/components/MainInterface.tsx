@@ -89,7 +89,10 @@ const TOOLBAR_ITEMS: Record<string, ToolbarItemDef[]> = {
     { icon: "📄", label: "新建", action: "new" },
     { icon: "📂", label: "打开", action: "open" },
     { icon: "💾", label: "保存", action: "save" },
-    { icon: "💾", label: "另存", action: "saveas" },
+    { icon: "│", label: "", action: "sep" },
+    { icon: "✂️", label: "剪切", action: "cut" },
+    { icon: "📋", label: "复制", action: "copy" },
+    { icon: "📝", label: "粘贴", action: "paste" },
     { icon: "│", label: "", action: "sep" },
     { icon: "↩", label: "撤销", action: "undo" },
     { icon: "↪", label: "重做", action: "redo" },
@@ -103,18 +106,19 @@ const TOOLBAR_ITEMS: Record<string, ToolbarItemDef[]> = {
     { icon: "📂", label: "打开", action: "open" },
     { icon: "💾", label: "保存", action: "save" },
     { icon: "│", label: "", action: "sep" },
-    { icon: "↩", label: "撤销", action: "undo" },
-    { icon: "↪", label: "重做", action: "redo" },
+    { icon: "✂️", label: "剪切", action: "cut" },
+    { icon: "📋", label: "复制", action: "copy" },
+    { icon: "📝", label: "粘贴", action: "paste" },
     { icon: "│", label: "", action: "sep" },
-    { icon: "+", label: "添加行", action: "insert-row" },
-    { icon: "+", label: "添加列", action: "insert-col" },
+    { icon: "➕", label: "添加行", action: "insert-row" },
+    { icon: "➕", label: "添加列", action: "insert-col" },
   ],
   ppt: [
     { icon: "📄", label: "新建", action: "new" },
     { icon: "📂", label: "打开", action: "open" },
     { icon: "💾", label: "保存", action: "save" },
     { icon: "│", label: "", action: "sep" },
-    { icon: "+", label: "新幻灯片", action: "add-slide" },
+    { icon: "➕", label: "新幻灯片", action: "add-slide" },
     { icon: "🗑", label: "删除", action: "delete-slide" },
     { icon: "│", label: "", action: "sep" },
     { icon: "▶", label: "放映", action: "present" },
@@ -158,21 +162,26 @@ export default function MainInterface({ username, onLogout, showToast }: MainInt
   const [recentFiles, setRecentFiles] = useState<{ name: string; path: string; time: string }[]>([]);
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
+  const [showNewMenu, setShowNewMenu] = useState(false);
+  const [newMenuPosition, setNewMenuPosition] = useState({ x: 0, y: 0 });
 
   const docEditorRef = useRef<DocumentEditorHandle>(null);
   const xlsEditorRef = useRef<SpreadsheetEditorHandle>(null);
   const pptEditorRef = useRef<PresentationEditorHandle>(null);
 
-  const handleNewFile = useCallback(() => {
+  const handleNewFile = useCallback((type?: "doc" | "xls" | "ppt" | "pdf") => {
+    const fileType = type || activeTab;
     const newFile: FileTab = {
       id: `file-${Date.now()}`,
-      name: `新建${TYPE_NAMES[activeTab]}.${EXT_MAP[activeTab]}`,
-      type: activeTab,
+      name: `新建${TYPE_NAMES[fileType]}.${EXT_MAP[fileType]}`,
+      type: fileType,
       modified: false,
     };
     setOpenFiles((prev) => [...prev, newFile]);
     setActiveFile(newFile);
-    showToast(`已创建新${TYPE_NAMES[activeTab]}`, "success");
+    setActiveTab(fileType);
+    setShowNewMenu(false);
+    showToast(`已创建新${TYPE_NAMES[fileType]}`, "success");
   }, [activeTab, showToast]);
 
   const handleOpenFile = useCallback(async () => {
@@ -505,7 +514,39 @@ export default function MainInterface({ username, onLogout, showToast }: MainInt
 
       {showToolbar && (
         <div className="wps-toolbar">
-          {TOOLBAR_ITEMS[activeTab]?.map((item, i) =>
+          {/* 新建按钮 - 带下拉菜单 */}
+          <div className="toolbar-new-wrapper">
+            <button 
+              className="toolbar-btn toolbar-new-btn" 
+              onClick={(e) => {
+                const rect = (e.target as HTMLElement).closest('button')?.getBoundingClientRect();
+                if (rect) {
+                  setNewMenuPosition({ x: rect.left, y: rect.bottom + 4 });
+                }
+                setShowNewMenu(!showNewMenu);
+              }} 
+              title="新建文件"
+            >
+              <span className="btn-icon">📄</span>
+              <span className="btn-label">新建</span>
+              <span className="btn-arrow">▼</span>
+            </button>
+            {showNewMenu && (
+              <div className="toolbar-new-menu" style={{ left: newMenuPosition.x, top: newMenuPosition.y }}>
+                <div className="new-menu-item" onClick={() => handleNewFile("doc")}>
+                  <span>📝</span> <span>新建文档</span>
+                </div>
+                <div className="new-menu-item" onClick={() => handleNewFile("xls")}>
+                  <span>📊</span> <span>新建表格</span>
+                </div>
+                <div className="new-menu-item" onClick={() => handleNewFile("ppt")}>
+                  <span>📽</span> <span>新建演示</span>
+                </div>
+              </div>
+            )}
+          </div>
+          
+          {TOOLBAR_ITEMS[activeTab]?.filter(item => item.action !== "new").map((item, i) =>
             item.action === "sep" ? <div key={i} className="toolbar-sep" /> : (
               <button key={i} className="toolbar-btn" onClick={() => handleMenuAction(item.action)} title={item.label}>
                 <span className={`btn-icon ${item.bold ? "strong" : ""}`}>{item.icon}</span>
@@ -515,6 +556,9 @@ export default function MainInterface({ username, onLogout, showToast }: MainInt
           )}
         </div>
       )}
+      
+      {/* 点击其他区域关闭新建菜单 */}
+      {showNewMenu && <div className="menu-overlay" onClick={() => setShowNewMenu(false)} />}
 
       <div className="wps-content">
         {showSidebar && (

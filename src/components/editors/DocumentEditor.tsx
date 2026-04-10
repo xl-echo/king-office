@@ -31,9 +31,12 @@ export default forwardRef<DocumentEditorHandle, DocumentEditorProps>(function Do
   // 初始化编辑器内容
   const initEditor = () => {
     if (!editorRef.current) return;
-    if (!editorRef.current.innerHTML || editorRef.current.innerHTML === "<br>" || editorRef.current.innerHTML === "&nbsp;") {
+    // 确保编辑器是空的或只有占位符
+    const currentHtml = editorRef.current.innerHTML || "";
+    if (!currentHtml || currentHtml === "<br>" || currentHtml === "&nbsp;" || currentHtml === "<p><br></p>") {
       editorRef.current.innerHTML = "";
     }
+    // 自动聚焦到编辑器
     editorRef.current.focus();
   };
 
@@ -42,14 +45,23 @@ export default forwardRef<DocumentEditorHandle, DocumentEditorProps>(function Do
     // 延迟初始化以确保DOM已挂载
     const timer = setTimeout(() => {
       initEditor();
-    }, 100);
+    }, 150);
     return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
     // 监听外部内容变化（如新建文件）
-    if (content === undefined && editorRef.current && !editorRef.current.innerHTML) {
-      initEditor();
+    if (content === undefined) {
+      // 清空编辑器
+      setHtmlContent("");
+      historyRef.current = [""];
+      historyIndexRef.current = 0;
+      setTimeout(() => {
+        if (editorRef.current) {
+          editorRef.current.innerHTML = "";
+          editorRef.current.focus();
+        }
+      }, 50);
     }
   }, [content]);
 

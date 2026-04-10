@@ -30,6 +30,7 @@ export default forwardRef<SpreadsheetEditorHandle, SpreadsheetEditorProps>(
     const [editValue, setEditValue] = useState("");
     const [cols, setCols] = useState(10);
     const [rowCount, setRowCount] = useState(20);
+    const [isEditing, setIsEditing] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
     const initializeGrid = () => {
@@ -114,9 +115,22 @@ export default forwardRef<SpreadsheetEditorHandle, SpreadsheetEditorProps>(
     };
 
     const handleCellClick = (row: number, col: number) => {
+      // 如果已经在编辑同一个单元格，不做任何操作
+      if (isEditing && selectedCell?.row === row && selectedCell?.col === col) {
+        return;
+      }
+      // 如果正在编辑其他单元格，先保存当前编辑
+      if (isEditing && selectedCell) {
+        handleCellBlur();
+      }
       setSelectedCell({ row, col });
       setEditValue(rows[row][col].value);
-      inputRef.current?.focus();
+      setIsEditing(true);
+      // 延迟聚焦以确保输入框已渲染
+      setTimeout(() => {
+        inputRef.current?.focus();
+        inputRef.current?.select();
+      }, 10);
     };
 
     const handleCellBlur = () => {
@@ -124,6 +138,7 @@ export default forwardRef<SpreadsheetEditorHandle, SpreadsheetEditorProps>(
         const newRows = rows.map((r) => r.map((c) => ({ ...c })));
         newRows[selectedCell.row][selectedCell.col].value = editValue;
         setRows(newRows);
+        setIsEditing(false);
         onChange(newRows);
       }
     };
@@ -226,33 +241,31 @@ export default forwardRef<SpreadsheetEditorHandle, SpreadsheetEditorProps>(
               {rows.map((row, rowIndex) => (
                 <tr key={rowIndex}>
                   <td className="row-header">{rowIndex + 1}</td>
-                  {row.map((cell, colIndex) => (
-                    <td
-                      key={colIndex}
-                      className={`cell ${
-                        selectedCell?.row === rowIndex &&
-                        selectedCell?.col === colIndex
-                          ? "selected"
-                          : ""
-                      }`}
-                      onClick={() => handleCellClick(rowIndex, colIndex)}
-                    >
-                      {selectedCell?.row === rowIndex &&
-                      selectedCell?.col === colIndex ? (
-                        <input
-                          ref={inputRef}
-                          type="text"
-                          className="cell-input"
-                          value={editValue}
-                          onChange={(e) => setEditValue(e.target.value)}
-                          onBlur={handleCellBlur}
-                          onKeyDown={handleKeyDown}
-                        />
-                      ) : (
-                        cell.value
-                      )}
-                    </td>
-                  ))}
+                  {row.map((cell, colIndex) => {
+                    const isSelected = selectedCell?.row === rowIndex && selectedCell?.col === colIndex;
+                    return (
+                      <td
+                        key={colIndex}
+                        className={`cell ${isSelected ? "selected" : ""}`}
+                        onClick={() => handleCellClick(rowIndex, colIndex)}
+                      >
+                        {isSelected && isEditing ? (
+                          <input
+                            ref={inputRef}
+                            type="text"
+                            className="cell-input"
+                            value={editValue}
+                            onChange={(e) => setEditValue(e.target.value)}
+                            onBlur={handleCellBlur}
+                            onKeyDown={handleKeyDown}
+                            autoFocus
+                          />
+                        ) : (
+                          <span className="cell-text">{cell.value || ""}</span>
+                        )}
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>

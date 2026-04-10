@@ -386,6 +386,57 @@
 .btn-label { font-size: 10px; color: var(--color-text-muted); }
 .toolbar-btn:hover .btn-label { color: rgba(255,255,255,0.8); }
 
+/* 新建按钮下拉菜单 */
+.toolbar-new-wrapper {
+  position: relative;
+}
+
+.toolbar-new-btn {
+  width: 60px !important;
+}
+
+.btn-arrow {
+  font-size: 8px;
+  margin-left: 2px;
+  opacity: 0.7;
+}
+
+.toolbar-new-menu {
+  position: fixed;
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 1000;
+  min-width: 140px;
+  padding: 4px 0;
+}
+
+.new-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--color-text);
+  transition: background 0.15s;
+}
+
+.new-menu-item:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+}
+
 /* 主内容区 */
 .wps-content {
   flex: 1;
@@ -626,11 +677,18 @@
   box-shadow: var(--shadow-sm);
   font-size: 14px;
   transition: all var(--transition-fast);
+  overflow-y: auto;
 }
 
 .editor-textarea:focus {
   border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgba(79, 134, 247, 0.1);
+}
+
+.editor-textarea:empty::before {
+  content: attr(data-placeholder);
+  color: var(--color-text-muted);
+  pointer-events: none;
 }
 
 .editor-textarea::placeholder {
@@ -754,6 +812,13 @@
   font-size: 13px;
   padding: 0;
   background: white;
+}
+
+.cell-text {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* ===== 演示编辑器 ===== */
