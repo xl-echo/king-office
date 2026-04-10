@@ -3,6 +3,10 @@ node_modules/
 
 # Rust build output
 src-tauri/target/
+src-tauri/Cargo.lock
+
+# Build output
+dist/
 
 # IDE
 .vscode/
@@ -11,3 +15,6 @@ src-tauri/target/
 # OS
 .DS_Store
 Thumbs.db
+
+# Logs
+*.log
