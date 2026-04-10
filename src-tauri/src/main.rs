@@ -12,9 +12,6 @@ mod logger;
 
 static EXIT_FLAG: AtomicBool = AtomicBool::new(false);
 
-// 进程管理
-static mut CHILD_PIDS: Vec<u32> = Vec::new();
-
 fn main() {
     // 初始化日志系统
     if let Err(e) = logger::init_logger() {
@@ -90,8 +87,11 @@ fn main() {
 // 进程管理命令
 #[tauri::command]
 fn register_child_process(pid: u32) -> Result<(), String> {
-    unsafe {
-        CHILD_PIDS.push(pid);
+    use std::sync::Mutex;
+    static CHILD_PIDS_MUTEX: Mutex<Vec<u32>> = Mutex::new(Vec::new());
+
+    if let Ok(mut pids) = CHILD_PIDS_MUTEX.lock() {
+        pids.push(pid);
     }
     Ok(())
 }
@@ -99,6 +99,8 @@ fn register_child_process(pid: u32) -> Result<(), String> {
 #[tauri::command]
 fn set_exit_flag() -> Result<(), String> {
     EXIT_FLAG.store(true, Ordering::SeqCst);
+    // 当设置退出标志时，清理所有子进程
+    kill_all_child_processes();
     Ok(())
 }
 
@@ -118,17 +120,21 @@ fn get_app_data_dir() -> Result<String, String> {
 }
 
 fn kill_all_child_processes() {
-    unsafe {
-        for &pid in &CHILD_PIDS {
-            #[cfg(windows)]
-            {
-                use std::process::Command;
+    // 使用互斥锁保护CHILD_PIDS，避免静态可变引用问题
+    use std::sync::Mutex;
+    static CHILD_PIDS_MUTEX: Mutex<Vec<u32>> = Mutex::new(Vec::new());
+
+    if let Ok(mut pids) = CHILD_PIDS_MUTEX.lock() {
+        #[cfg(windows)]
+        {
+            use std::process::Command;
+            for &pid in pids.iter() {
                 let _ = Command::new("taskkill")
                     .args(["/F", "/PID", &pid.to_string()])
                     .output();
             }
         }
-        CHILD_PIDS.clear();
+        pids.clear();
     }
 }
 

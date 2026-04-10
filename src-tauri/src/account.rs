@@ -79,7 +79,7 @@ fn hash_password(password: &str, salt: &str) -> Result<String, String> {
 
 /// 验证密码
 fn verify_password(password: &str, hash: &str) -> Result<bool, String> {
-    use argon2::{PasswordHash, PasswordVerifier};
+    use argon2::password_hash::{PasswordHash, PasswordVerifier};
     
     let parsed_hash = PasswordHash::new(hash)
         .map_err(|e| format!("无效的密码哈希: {}", e))?;
@@ -247,6 +247,8 @@ pub fn is_account_exists() -> Result<bool, String> {
 }
 
 /// 获取当前登录用户信息
+/// 注意：由于密码解密需要用户密码，此函数仅检查账户是否存在
+/// 用户名信息由前端在登录成功后维护
 #[tauri::command]
 pub fn get_current_user() -> Result<Option<String>, String> {
     let account_file = get_account_file()?;
@@ -255,5 +257,7 @@ pub fn get_current_user() -> Result<Option<String>, String> {
         return Ok(None);
     }
     
-    Ok(Some("已登录用户".to_string()))
+    // 账户存在，但不返回用户名（需要密码解密）
+    // 前端在登录成功时已保存用户名
+    Ok(None)
 }

@@ -11,17 +11,24 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^2.0.0",
-    "@tauri-apps/plugin-dialog": "^2.0.0",
-    "@tauri-apps/plugin-fs": "^2.0.0",
+    "@tauri-apps/plugin-dialog": "^2.7.0",
+    "@tauri-apps/plugin-fs": "^2.5.0",
     "@tauri-apps/plugin-shell": "^2.0.0",
+    "docx": "^9.6.1",
+    "file-saver": "^2.0.5",
+    "mammoth": "^1.12.0",
+    "pptxgenjs": "^4.0.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.10.1",
     "@types/react": "^18.2.64",
     "@types/react-dom": "^18.2.21",
     "@vitejs/plugin-react": "^4.2.1",
+    "png-to-ico": "^3.0.1",
+    "sharp": "^0.34.5",
     "typescript": "^5.4.2",
     "vite": "^5.1.6"
   }
