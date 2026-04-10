@@ -1,0 +1,22 @@
+{
+  "identifier": "default",
+  "description": "Default permissions for KingOffice",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "shell:allow-open",
+    "dialog:allow-open",
+    "dialog:allow-save",
+    "dialog:allow-ask",
+    "dialog:allow-message",
+    "dialog:allow-confirm",
+    "fs:allow-read",
+    "fs:allow-write",
+    "fs:allow-exists",
+    "fs:allow-mkdir",
+    {
+      "identifier": "fs:scope",
+      "allow": ["**"]
+    }
+  ]
+}

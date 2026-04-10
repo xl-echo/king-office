@@ -153,8 +153,6 @@ fn create_desktop_shortcut() -> Result<(), String> {
     #[cfg(windows)]
     {
         use std::env;
-        use std::fs;
-        use std::path::PathBuf;
         
         // 获取当前exe路径
         let exe_path = env::current_exe()
