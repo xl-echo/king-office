@@ -23,7 +23,7 @@ BLOCK "VarFileInfo" {
 VALUE "Translation", 0x0, 0x04b0
 }
 }
-32512 ICON "D:\\AI\\product\\KingOffice\\v1.0.0\\src-tauri\\icons\\icons\\icon.ico"
+32512 ICON "D:\\AI\\product\\KingOffice\\v1.0.0\\src-tauri\\icons\\icon.ico"
 1 24
 {
 " <assembly xmlns=""urn:schemas-microsoft-com:asm.v1"" manifestVersion=""1.0""> "
